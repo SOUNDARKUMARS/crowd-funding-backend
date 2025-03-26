@@ -67,10 +67,13 @@ def create_campaign():
         return {"error":f"Failed to create campaign {e}"},500
     
 @views.route('/get-campaigns')
-@jwt_required()
+# @jwt_required()
 def get_campaigns():
-    # user_id=get_jwt_identity()
-    campaigns=Campaign.query.all()
+    user_id=request.args.get('user_id')
+    if(user_id):
+        campaigns=Campaign.query.filter_by(creator_id=user_id).all()
+    else:
+        campaigns=Campaign.query.all()
     if campaigns:
         return {
             "count":len(campaigns),
@@ -109,6 +112,7 @@ def get_my_campaigns():
                 "id":campaign.id,
                 "title":campaign.title,
                 "description":campaign.description,
+                "category_id":campaign.category_id,
                 "goal_amount":campaign.goal_amount,
                 "collected_amount":campaign.collected_amount,
                 "deadline": campaign.deadline.strftime('%Y-%m-%d'),

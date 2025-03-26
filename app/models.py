@@ -5,6 +5,7 @@ from app import db
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100))
     email = db.Column(db.String(120), nullable=False, unique=True)
     profile_img_url = db.Column(db.String(120))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -26,7 +27,7 @@ class Campaign(db.Model):
     goal_amount = db.Column(db.Float, nullable=False)
     collected_amount = db.Column(db.Float, default=0.0)
     deadline = db.Column(db.DateTime, nullable=False)
-    start_date = db.Column(db.DateTime, default=datetime.utcnow)
+    start_date = db.Column(db.DateTime)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     img_url = db.Column(db.String(120))
